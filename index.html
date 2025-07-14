@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>奈良時代の歴史年表</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        background-color: #f8f8f8;
+      }
+      h1 {
+        text-align: center;
+        padding: 20px;
+      }
+      canvas {
+        display: block;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>奈良時代の歴史年表（クリックしてメモ）</h1>
+    <script>
+      // 歴史用語と位置
+      const terms = [
+        { label: "大宝律令", x: 50, y: 100, memo: "" },
+        { label: "平城京", x: 200, y: 100, memo: "" },
+        { label: "長屋王", x: 350, y: 100, memo: "" },
+        { label: "三世一身法", x: 500, y: 100, memo: "" },
+        { label: "長屋王の変", x: 650, y: 100, memo: "" },
+        { label: "国分寺建立の詔", x: 800, y: 100, memo: "" },
+        { label: "墾田永年私財法", x: 980, y: 100, memo: "" },
+        { label: "大仏造立の詔", x: 1160, y: 100, memo: "" }
+      ];
+
+      let selectedTerm = null;
+      let memoInput;
+
+      function setup() {
+        createCanvas(windowWidth - 40, 250).parent(document.body);
+        textSize(16);
+        memoInput = createInput('');
+        memoInput.position(50, 220);
+        memoInput.size(400);
+        memoInput.hide();
+      }
+
+      function draw() {
+        background(255);
+        fill(0);
+        text("※歴史用語をクリックするとメモが書けます", 50, 30);
+
+        for (let term of terms) {
+          fill(173, 216, 230);
+          rect(term.x, term.y - 20, 140, 30, 5);
+          fill(0);
+          text(term.label, term.x + 10, term.y);
+        }
+
+        if (selectedTerm) {
+          fill(0);
+          text("メモ（" + selectedTerm.label + "）:", 50, 210);
+        }
+      }
+
+      function mousePressed() {
+        for (let term of terms) {
+          if (
+            mouseX >= term.x &&
+            mouseX <= term.x + 140 &&
+            mouseY >= term.y - 20 &&
+            mouseY <= term.y + 10
+          ) {
+            selectedTerm = term;
+            memoInput.value(term.memo);
+            memoInput.show();
+            return;
+          }
+        }
+        selectedTerm = null;
+        memoInput.hide();
+      }
+
+      function keyTyped() {
+        if (selectedTerm) {
+          selectedTerm.memo = memoInput.value();
+        }
+      }
+
+      function windowResized() {
+        resizeCanvas(windowWidth - 40, 250);
+      }
+    </script>
+  </body>
+</html>
